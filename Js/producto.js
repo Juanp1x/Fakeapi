@@ -20,6 +20,7 @@ function toggleFavorito(prodObj) {
 }
 
 // ✅ Detalle del producto
+// ✅ Detalle del producto
 async function Detalle(id) {
   document.getElementById("root").innerHTML =
     '<p class="cargando">Cargando detalle...</p>';
@@ -32,15 +33,8 @@ async function Detalle(id) {
     return;
   }
 
-  // ✅ Verificar si tiene imágenes reales en la API
-  let img = "";
-  if (p.images && Array.isArray(p.images) && p.images.length > 0) {
-    img = p.images[0];
-  } else if (p.thumbnail) {
-    img = p.thumbnail;
-  } else {
-    img = "https://placehold.co/400x300?text=Sin+imagen";
-  }
+  const img = obtenerImagenProducto(p); // ← Usa la misma función
+  const imgAlt = "https://placehold.co/400x300?text=Sin+imagen";
 
   const enFav =
     (JSON.parse(localStorage.getItem("favs")) || []).some(
@@ -50,7 +44,9 @@ async function Detalle(id) {
   // ✅ Render del detalle del producto
   document.getElementById("root").innerHTML = `
     <section class="detalle">
-      <img src="${img}" alt="${p.title}">
+      <img src="${img}" alt="${p.title}" 
+           onerror="this.src='${imgAlt}'; this.style.background='#f0f0f0'"
+           style="background: #f8f8f8">
       <div class="info">
         <button class="btn" onclick="Home()">← Volver</button>
         <h2>${p.title}</h2>

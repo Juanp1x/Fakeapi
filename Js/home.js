@@ -5,21 +5,35 @@ let totalPaginas = 1;
 let ultimoFiltro = {};
 
 // ✅ Función para crear las tarjetas de producto
-function crearTarjetaProducto(p) {
-  // Verificar si la API trae imagen
-  let img = "";
-  if (p.images && Array.isArray(p.images) && p.images.length > 0) {
-    img = p.images[0];
-  } else if (p.thumbnail) {
-    img = p.thumbnail;
-  } else {
-    // Imagen de respaldo si no hay ninguna
-    img = "https://placehold.co/300x200?text=Sin+imagen";
+// ✅ Función para obtener imagen de producto (AGREGA ESTA FUNCIÓN NUEVA)
+function obtenerImagenProducto(producto) {
+  // Buscar en todos los campos posibles que puedan contener la imagen
+  const camposImagen = ['image', 'images', 'thumbnail', 'img', 'photo', 'picture', 'url'];
+  
+  for (let campo of camposImagen) {
+    if (producto[campo]) {
+      if (Array.isArray(producto[campo]) && producto[campo].length > 0) {
+        return producto[campo][0]; // Primer elemento del array
+      } else if (typeof producto[campo] === 'string') {
+        return producto[campo]; // String directo
+      }
+    }
   }
+  
+  // Si no encuentra ninguna imagen, usar placeholder
+  return "https://placehold.co/300x200?text=Sin+imagen";
+}
+
+// ✅ Función para crear las tarjetas de producto (MODIFICA ESTA)
+function crearTarjetaProducto(p) {
+  const img = obtenerImagenProducto(p);
+  const imgAlt = "https://placehold.co/300x200?text=Sin+imagen";
 
   return `
     <div class="producto" onclick="Detalle(${p.id})">
-      <img src="${img}" alt="${p.title || p.name}">
+      <img src="${img}" alt="${p.title || p.name}" 
+           onerror="this.src='${imgAlt}'; this.style.background='#f0f0f0'"
+           style="background: #f8f8f8">
       <h3>${p.title || p.name}</h3>
       <div class="precio">$${p.price ?? "—"}</div>
     </div>
@@ -49,6 +63,7 @@ async function Home(params = {}) {
   } else {
     totalPaginas = 1;
   }
+  debugImagenes();
 
   renderHome();
 }
@@ -138,4 +153,24 @@ function debounce(fn, ms = 300) {
 // ✅ Ejecutar al cargar la página
 function General() {
   Home({ page: 1, limit: 12 });
+}
+
+function debugImagenes() {
+  console.log('=== 🔍 DEBUG DE IMÁGENES ===');
+  if (productosCache && productosCache.length > 0) {
+    productosCache.forEach((producto, index) => {
+      console.log(`Producto ${index + 1}:`, {
+        título: producto.title,
+        todasLasPropiedades: Object.keys(producto),
+        images: producto.images,
+        thumbnail: producto.thumbnail, 
+        image: producto.image,
+        img: producto.img,
+        cualquierCampoConImagen: Object.entries(producto).find(([key, value]) => 
+          typeof value === 'string' && value.includes('http') && 
+          (value.includes('.jpg') || value.includes('.png') || value.includes('.jpeg'))
+        )
+      });
+    });
+  }
 }

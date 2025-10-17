@@ -7,7 +7,7 @@ function Favoritos() {
   }
   const html = favs.map(p => `
     <div class="fav-item">
-      <img src="${p.images?.[0] || p.thumbnail || 'https://via.placeholder.com/100'}" alt="${p.title}">
+    <img src="${obtenerImagenProducto(p)}" alt="${p.title}" onerror="this.src='https://via.placeholder.com/100'">
       <div>
         <h4>${p.title}</h4>
         <p class="small">$${p.price}</p>

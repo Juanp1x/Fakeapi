@@ -67,3 +67,16 @@ async function obtenerCategorias() {
     return [];
   }
 }
+
+async function probarImagenes() {
+  obtenerProductos({ limit: 3 }).then(result => {
+    console.log('=== PRUEBA DE IMÁGENES ===');
+    result.data.forEach((producto, index) => {
+      console.log(`Producto ${index + 1}:`, {
+        titulo: producto.title,
+        imagenEncontrada: obtenerImagenProducto(producto),
+        todosLosCampos: Object.keys(producto)
+      });
+    });
+  });
+}
