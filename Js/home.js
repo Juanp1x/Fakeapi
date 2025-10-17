@@ -63,7 +63,6 @@ async function Home(params = {}) {
   } else {
     totalPaginas = 1;
   }
-  debugImagenes();
 
   renderHome();
 }
@@ -155,22 +154,4 @@ function General() {
   Home({ page: 1, limit: 12 });
 }
 
-function debugImagenes() {
-  console.log('=== 🔍 DEBUG DE IMÁGENES ===');
-  if (productosCache && productosCache.length > 0) {
-    productosCache.forEach((producto, index) => {
-      console.log(`Producto ${index + 1}:`, {
-        título: producto.title,
-        todasLasPropiedades: Object.keys(producto),
-        images: producto.images,
-        thumbnail: producto.thumbnail, 
-        image: producto.image,
-        img: producto.img,
-        cualquierCampoConImagen: Object.entries(producto).find(([key, value]) => 
-          typeof value === 'string' && value.includes('http') && 
-          (value.includes('.jpg') || value.includes('.png') || value.includes('.jpeg'))
-        )
-      });
-    });
-  }
-}
+
