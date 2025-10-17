@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Fake E-commerce - Proyecto</title>
+
+</head>
+<body>
+  <header class="header">
+    <div class="brand">🛍️ Fake E-commerce</div>
+    <nav class="nav">
+      <button onclick="General()">Inicio</button>
+      <button onclick="VerCarrito()">🛒 Carrito</button>
+      <button onclick="Favoritos()">❤️ Favoritos</button>
+      <button onclick="SobreNosotros()">ℹ️ Sobre</button>
+    </nav>
+  </header>
+
+  <main id="root" class="root">
+    <!-- Contenido renderizado por JS -->
+  </main>
+
+  <footer class="footer">
+    © 2025 Fake E-commerce | Desarrollado por Juan
+  </footer>
+
+  <script src="Js/conexion.js"></script>
+  <script src="Js/home.js"></script>
+  <script src="Js/producto.js"></script>
+  <script src="Js/favoritos.js"></script>
+  <script src="Js/carrito.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', General);
+    // función simple sobre nosotros
+    function SobreNosotros() {
+      document.getElementById('root').innerHTML = `
+        <section class="sobre">
+          <h2>Sobre Fake E-commerce</h2>
+          <p>Proyecto de demostración conectado a fakeapi.net (API pública de ejemplo).</p>
+        </section>
+      `;
+    }
+  </script>
+</body>
+</html>
